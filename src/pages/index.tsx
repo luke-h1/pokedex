@@ -8,7 +8,7 @@ const Home = () => {
   const [searchValue, setSearchValue] = useState('');
   const debouncedSearchValue = useDebounce(searchValue, 300);
 
-  const {  isError, isSuccess, data } = useQuery(
+  const { isError, isSuccess, data } = useQuery(
     ['searchPokemons', debouncedSearchValue],
     () => searchPokemons(debouncedSearchValue),
     {
@@ -16,8 +16,7 @@ const Home = () => {
     },
   );
 
-  const renderResult = () => {
-
+  const renderResult = useCallback(() => {
     if (isError) {
       return <div className="search-message"> Something went wrong </div>;
     }
@@ -27,7 +26,8 @@ const Home = () => {
     }
 
     return null;
-  };
+  }, [data, isError, isSuccess]);
+
   return (
     <div className="home">
       <h1>Search pokemons</h1>
